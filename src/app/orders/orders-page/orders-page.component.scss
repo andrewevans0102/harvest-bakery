@@ -1,0 +1,47 @@
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em;
+}
+
+.top-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  width: 40em;
+}
+
+.top-buttons > button {
+  width: 20em;
+  margin: 2em;
+}
+
+.name-date {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.view-edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-edit > button {
+  width: 20em;
+}
+
+.order {
+  width: 40em;
+}
+
+.orders-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 1em;
+}

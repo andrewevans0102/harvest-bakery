@@ -1,0 +1,70 @@
+{
+  "login": {
+    "uid": "1234",
+    "token": "abcd_token",
+    "name": "Han Solo",
+    "email": "WookieLove@starwars.com"
+  },
+  "logout": {
+    "message": "successful logout"
+  },
+  "baked-goods": [
+    {
+      "name": "bagel",
+      "price": "$2.00",
+      "picture": "",
+      "description": "freshly baked bagel that is served sliced and toasted"
+    },
+    {
+      "name": "scone",
+      "price": "$4.00",
+      "picture": "",
+      "description": "blueberry scone"
+    },
+    {
+      "name": "cinnamon roll",
+      "price": "$4.50",
+      "picture": "",
+      "description": "cinnamon swirl of baked happiness"
+    },
+    {
+      "name": "bear claw",
+      "price": "$2.00",
+      "picture": "",
+      "description": "wonderful pastry with cinnamon and baked goodness"
+    },
+    {
+      "name": "croissant",
+      "price": "$4.00",
+      "picture": "",
+      "description": "nice puffy roll that is baked to perfection"
+    }
+  ],
+  "orders": [
+    {
+      "name": "first order",
+      "date": 1572907366376,
+      "id": 0
+    },
+    {
+      "name": "second order",
+      "date": 1572993766376,
+      "id": 1
+    },
+    {
+      "name": "third order",
+      "date": 1573080166376,
+      "id": 2
+    },
+    {
+      "name": "fourth order",
+      "date": 1573166566376,
+      "id": 3
+    },
+    {
+      "name": "fifth order",
+      "date": 1573252966376,
+      "id": 4
+    }
+  ]
+}
