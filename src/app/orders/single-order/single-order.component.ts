@@ -10,7 +10,6 @@ import { OrdersService } from 'src/app/services/orders/orders.service';
 })
 export class SingleOrderComponent implements OnInit {
   goods = [];
-  goodsSelected = [];
   loginId: number;
   orderId: number;
   usage: string;
@@ -42,31 +41,28 @@ export class SingleOrderComponent implements OnInit {
   }
 
   async getGoods() {
-    this.goods = await this.goodsService.getGoods();
-    if (this.usage === 'VIEW') {
-      this.viewOrder = await this.ordersService.getOrderById(this.orderId);
-      this.goods.forEach(good => {
-        this.viewOrder.goods.forEach(og => {
-          if (good.id === og.goodId) {
-            good.quantity = og.quantity;
-          }
+    try {
+      this.goods = await this.goodsService.getGoods();
+      if (this.usage === 'VIEW') {
+        this.viewOrder = await this.ordersService.getOrderById(this.orderId);
+        this.goods.forEach(good => {
+          this.viewOrder.goods.forEach(og => {
+            if (good.id === og.goodId) {
+              good.quantity = og.quantity;
+            }
+          });
         });
-      });
-    } else {
-      this.goods.forEach(good => {
-        this.goodsSelected.push({
-          goodId: good.id,
-          quantity: 0,
-          price: parseFloat(good.price)
-        });
-      });
+      }
+    } catch (error) {
+      alert(error.message);
+      return;
     }
   }
 
   selectGood(goodId: number, quantity: string) {
     // this is inefficient as the loop continues even after the
     // specific case is found, consider refactoring
-    this.goodsSelected.forEach(good => {
+    this.goods.forEach(good => {
       if (good.goodId === goodId) {
         good.quantity = parseInt(quantity, 10);
       }
@@ -86,14 +82,13 @@ export class SingleOrderComponent implements OnInit {
         owner: this.loginId,
         total: 0
       };
-      this.goodsSelected.forEach(good => {
-        const adddedCost = good.quantity * good.price;
-        savedOrder.total = savedOrder.total + adddedCost;
-        const savedGood = {
+      this.goods.forEach(good => {
+        savedOrder.total = savedOrder.total + good.quantity * good.price;
+
+        savedOrder.goods.push({
           goodId: good.goodId,
           quantity: good.quantity
-        };
-        savedOrder.goods.push(savedGood);
+        });
       });
       await this.ordersService.createOrder(savedOrder);
 

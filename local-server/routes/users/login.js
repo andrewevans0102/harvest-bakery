@@ -1,15 +1,9 @@
-const fs = require('fs');
 const usersFile = './data/users.json';
+const util = require('../../util/util');
 
-// app.get('/logout', (req, res, next) => {
-//   res.status(200).send('logout successful');
-// });
-
-module.exports = (req, res) => {
-  const fileData = fs.readFileSync(usersFile, 'utf8');
-  let users = JSON.parse(fileData);
-  const foundUser = users.find(user => (user.email = req.body.email));
-
+module.exports = async (req, res) => {
+  const users = await util.readFile(usersFile);
+  const foundUser = users.find(user => user.email === req.body.email);
   if (foundUser.email === undefined) {
     res.status(500).send('user was not found');
   } else {

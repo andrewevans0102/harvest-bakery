@@ -37,6 +37,7 @@
                         id="goodQuantity"
                         (change)="selectGood(good.id, $event.target.value)"
                         *ngIf="this.usage !== view"
+                        value="good.quantity"
                       >
                         <option>0</option>
                         <option>1</option>

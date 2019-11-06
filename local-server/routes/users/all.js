@@ -1,7 +1,7 @@
-const fs = require('fs');
 const usersFile = './data/users.json';
+const util = require('../../util/util');
 
-module.exports = (req, res) => {
-  const fileData = fs.readFileSync(usersFile, 'utf8');
-  res.status(200).send(JSON.parse(fileData));
+module.exports = async (req, res) => {
+  const users = await util.readFile(usersFile);
+  res.status(200).send(users);
 };

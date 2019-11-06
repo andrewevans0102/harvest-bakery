@@ -18,6 +18,9 @@
           <div class="name-date">
             <p>{{ order.date | date: 'short' }}</p>
           </div>
+          <div class="name-date">
+            <p>Order Number: {{ order.id }}</p>
+          </div>
           <div class="view-delete">
             <button class="btn btn-primary" (click)="viewOrder(order.id)">
               view

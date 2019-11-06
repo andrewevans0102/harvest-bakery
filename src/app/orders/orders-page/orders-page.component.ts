@@ -29,14 +29,22 @@ export class OrdersPageComponent implements OnInit {
   }
 
   async getOrders(ownerId: string) {
-    this.orders = await this.ordersService.getOrdersByOwner(ownerId);
+    try {
+      this.orders = await this.ordersService.getOrdersByOwner(ownerId);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async logout() {
-    const response = await this.auth.logout();
-    alert(response);
-    localStorage.removeItem('login');
-    this.router.navigateByUrl('/landing-page');
+    try {
+      const response = await this.auth.logout();
+      alert(response);
+      localStorage.removeItem('login');
+      this.router.navigateByUrl('/landing-page');
+    } catch (error) {
+      throw error;
+    }
   }
 
   viewOrder(id: number) {
@@ -44,12 +52,20 @@ export class OrdersPageComponent implements OnInit {
   }
 
   async createOrder() {
-    const orders = await this.ordersService.getAll();
-    this.router.navigateByUrl(`/single-order/${orders.length + 1}/CREATE)`);
+    try {
+      const orders = await this.ordersService.getAll();
+      this.router.navigateByUrl(`/single-order/${orders.length + 1}/CREATE)`);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async deleteOrder(orderId: string) {
-    await this.ordersService.deleteOrder(orderId);
-    this.getOrders(this.loginId);
+    try {
+      await this.ordersService.deleteOrder(orderId);
+      this.getOrders(this.loginId);
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -9,15 +9,11 @@ export class AuthenticationService {
   constructor() {}
 
   async login(email: string, password: string) {
-    try {
-      const response = await axios.post(environment.loginRoute, {
-        email,
-        password
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await axios.post(environment.loginRoute, {
+      email,
+      password
+    });
+    return response.data;
   }
 
   async logout() {

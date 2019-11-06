@@ -4,5 +4,5 @@ export const environment = {
   goodsRoute: 'http://localhost:1122/goods',
   ordersRoute: 'http://localhost:1122/orders',
   loginRoute: 'http://localhost:1122/users/login',
-  logoutRoute: 'http://localhost:1122/logout'
+  logoutRoute: 'http://localhost:1122/users/logout'
 };
