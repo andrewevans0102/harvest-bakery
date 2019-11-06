@@ -9,9 +9,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginPageComponent } from './login-page/login-page.component';
 import { FormsModule } from '@angular/forms';
 import { OrdersPageComponent } from './orders/orders-page/orders-page.component';
-import { CreateOrdersComponent } from './orders/create-orders/create-orders.component';
-import { ViewOrdersComponent } from './orders/view-orders/view-orders.component';
-import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component';
+import { SingleOrderComponent } from './orders/single-order/single-order.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +19,7 @@ import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component'
     PageNotFoundComponent,
     LoginPageComponent,
     OrdersPageComponent,
-    CreateOrdersComponent,
-    ViewOrdersComponent,
-    EditOrdersComponent
+    SingleOrderComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

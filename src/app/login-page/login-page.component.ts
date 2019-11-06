@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
-  email = 'WookieLove@starwars.com';
-  password = 'fuzzBall';
+  // for a list of users, consult local-server/data/users.json
+  email = 'HanSolo@gmail.com';
+  password = 'password1';
 
   constructor(
     private authService: AuthenticationService,
@@ -19,7 +20,15 @@ export class LoginPageComponent implements OnInit {
   ngOnInit() {}
 
   async onSubmit() {
-    await this.authService.login(this.email, this.password);
-    this.router.navigateByUrl('/orders-page');
+    try {
+      const loginResponse = await this.authService.login(
+        this.email,
+        this.password
+      );
+      localStorage.setItem('login', JSON.stringify(loginResponse));
+      this.router.navigateByUrl('/orders-page');
+    } catch (error) {
+      alert(error.message);
+    }
   }
 }

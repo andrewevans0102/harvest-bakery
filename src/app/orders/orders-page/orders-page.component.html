@@ -6,7 +6,8 @@
   </div>
   <div class="row">
     <div class="col top-buttons">
-      <button class="btn btn-success">create order</button
+      <button class="btn btn-success" (click)="createOrder()">
+        create order</button
       ><button class="btn btn-danger" (click)="logout()">logout</button>
     </div>
   </div>
@@ -15,11 +16,15 @@
       <ul *ngFor="let order of orders" class="list-group">
         <li class="list-group-item order">
           <div class="name-date">
-            <p>{{ order.name }}, {{ order.date | date: 'short' }}</p>
+            <p>{{ order.date | date: 'short' }}</p>
           </div>
-          <div class="view-edit">
-            <button class="btn btn-primary">view</button>
-            <button class="btn btn-success">edit</button>
+          <div class="view-delete">
+            <button class="btn btn-primary" (click)="viewOrder(order.id)">
+              view
+            </button>
+            <button class="btn btn-danger" (click)="deleteOrder(order.id)">
+              delete
+            </button>
           </div>
         </li>
       </ul>

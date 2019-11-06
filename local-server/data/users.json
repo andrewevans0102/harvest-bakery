@@ -1,0 +1,43 @@
+[
+  {
+    "firstName": "Han",
+    "lastName": "Solo",
+    "email": "HanSolo@gmail.com",
+    "password": "password1",
+    "id": 1
+  },
+  {
+    "firstName": "Chewbacca",
+    "lastName": "Wookie",
+    "email": "ChewbaccaWookie@gmail.com",
+    "password": "password2",
+    "id": 2
+  },
+  {
+    "firstName": "Leia",
+    "lastName": "Organa",
+    "email": "LeiaOrgana@gmail.com",
+    "password": "password3",
+    "id": 3
+  },
+  {
+    "firstName": "Luke",
+    "lastName": "Skywalker",
+    "email": "LukeSkywalker@gmail.com",
+    "password": "password4",
+    "id": 4
+  },
+  {
+    "firstName": "Darth",
+    "lastName": "Vader",
+    "email": "DarthVader@gmail.com",
+    "password": "password5",
+    "id": 5
+  },
+  {
+    "name": "han solo",
+    "password": "password1",
+    "profession": "awesome",
+    "id": 6
+  }
+]

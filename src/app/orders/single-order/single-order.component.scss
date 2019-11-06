@@ -1,0 +1,22 @@
+.description {
+  display: flex;
+  margin: 1em;
+}
+
+.bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottom > button {
+  width: 10em;
+  margin: 1em;
+}
+
+.total {
+  text-align: center;
+  font-size: 2em;
+  padding: 1em;
+  color: blue;
+}

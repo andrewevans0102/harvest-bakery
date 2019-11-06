@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "start-server-and-test \"npm run start-server\" http://localhost:1122 \"npm run start-client\"",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "json-server": "./node_modules/.bin/json-server --watch ./mock-server/response.json",
-    "start-demo": "start-server-and-test \"npm run json-server\" http://localhost:3000 \"ng serve\""
+    "start-server": "cd local-server; npm run start",
+    "start-client": "ng serve"
   },
   "private": true,
   "dependencies": {

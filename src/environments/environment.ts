@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  usersRoute: 'http://localhost:1122/users',
+  goodsRoute: 'http://localhost:1122/goods',
+  ordersRoute: 'http://localhost:1122/orders',
+  loginRoute: 'http://localhost:1122/users/login',
+  logoutRoute: 'http://localhost:1122/logout'
 };
 
 /*

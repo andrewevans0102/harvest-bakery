@@ -1,0 +1,42 @@
+[
+  {
+    "name": "bagel",
+    "price": "2.00",
+    "picture": "./assets/bagel.jpg",
+    "description": "freshly baked bagel that is served sliced and toasted",
+    "id": 1,
+    "quantity": 0
+  },
+  {
+    "name": "scone",
+    "price": "4.00",
+    "picture": "./assets/scone.jpg",
+    "description": "blueberry scone",
+    "id": 2,
+    "quantity": 0
+  },
+  {
+    "name": "cinnamon roll",
+    "price": "4.50",
+    "picture": "./assets/cinnamon_roll.jpg",
+    "description": "cinnamon swirl of baked happiness",
+    "id": 3,
+    "quantity": 0
+  },
+  {
+    "name": "blueberry muffin",
+    "price": "2.00",
+    "picture": "./assets/blueberry_muffin.jpg",
+    "description": "wonderful pastry with blueberry",
+    "id": 4,
+    "quantity": 0
+  },
+  {
+    "name": "croissant",
+    "price": "4.00",
+    "picture": "./assets/croissant.jpg",
+    "description": "nice puffy roll that is baked to perfection",
+    "id": 5,
+    "quantity": 0
+  }
+]
