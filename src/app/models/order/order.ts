@@ -1,8 +1,9 @@
+import { Goods } from '../goods/goods';
+
 export class Order {
-  name: string | null;
   date: number | null;
   id: number | null;
-  goods: any[] = [];
+  goods: Goods[] = [];
   owner: number | null;
   total: number | null;
 }

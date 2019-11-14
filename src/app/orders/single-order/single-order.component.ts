@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GoodsService } from 'src/app/services/goods/goods.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdersService } from 'src/app/services/orders/orders.service';
+import { Goods } from 'src/app/models/goods/goods';
+import { Order } from 'src/app/models/order/order';
 
 @Component({
   selector: 'app-create-orders',
@@ -9,13 +11,13 @@ import { OrdersService } from 'src/app/services/orders/orders.service';
   styleUrls: ['./single-order.component.scss']
 })
 export class SingleOrderComponent implements OnInit {
-  goods = [];
+  goods: Goods[] = [];
   loginId: number;
   orderId: number;
   usage: string;
   view = 'VIEW';
   create = 'CREATE';
-  viewOrder: any;
+  viewOrder: Order;
 
   constructor(
     private goodsService: GoodsService,
@@ -47,7 +49,7 @@ export class SingleOrderComponent implements OnInit {
         this.viewOrder = await this.ordersService.getOrderById(this.orderId);
         this.goods.forEach(good => {
           this.viewOrder.goods.forEach(og => {
-            if (good.id === og.goodId) {
+            if (good.id === og.id) {
               good.quantity = og.quantity;
             }
           });
@@ -63,7 +65,7 @@ export class SingleOrderComponent implements OnInit {
     // this is inefficient as the loop continues even after the
     // specific case is found, consider refactoring
     this.goods.forEach(good => {
-      if (good.goodId === goodId) {
+      if (good.id === goodId) {
         good.quantity = parseInt(quantity, 10);
       }
     });
@@ -75,20 +77,15 @@ export class SingleOrderComponent implements OnInit {
 
   async saveOrder() {
     try {
-      const savedOrder = {
-        date: Date.now(),
-        id: 0, // this will be set on the server side
-        goods: [],
-        owner: this.loginId,
-        total: 0
-      };
+      // when creating the order make sure the id is 0 as that will be set server side
+      const savedOrder: Order = new Order();
+      (savedOrder.date = Date.now()), (savedOrder.id = 0);
+      savedOrder.goods = [];
+      savedOrder.owner = this.loginId;
+      savedOrder.total = 0;
       this.goods.forEach(good => {
         savedOrder.total = savedOrder.total + good.quantity * good.price;
-
-        savedOrder.goods.push({
-          goodId: good.goodId,
-          quantity: good.quantity
-        });
+        savedOrder.goods.push(good);
       });
       await this.ordersService.createOrder(savedOrder);
 

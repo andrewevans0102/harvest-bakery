@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrdersService } from '../../services/orders/orders.service';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { Order } from 'src/app/models/order/order';
 
 @Component({
   selector: 'app-orders-page',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./orders-page.component.scss']
 })
 export class OrdersPageComponent implements OnInit {
-  orders = [];
+  orders: Order[] = [];
   loginId: string;
 
   constructor(
@@ -53,8 +54,9 @@ export class OrdersPageComponent implements OnInit {
 
   async createOrder() {
     try {
-      const orders = await this.ordersService.getAll();
-      this.router.navigateByUrl(`/single-order/${orders.length + 1}/CREATE)`);
+      this.router.navigateByUrl(
+        `/single-order/${this.orders.length + 1}/CREATE)`
+      );
     } catch (error) {
       throw error;
     }
