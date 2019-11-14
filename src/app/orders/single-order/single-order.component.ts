@@ -62,13 +62,10 @@ export class SingleOrderComponent implements OnInit {
   }
 
   selectGood(goodId: number, quantity: string) {
-    // this is inefficient as the loop continues even after the
-    // specific case is found, consider refactoring
-    this.goods.forEach(good => {
-      if (good.id === goodId) {
-        good.quantity = parseInt(quantity, 10);
-      }
-    });
+    const goodIndex = this.goods.findIndex(good => good.id === goodId);
+    if (goodIndex !== -1) {
+      this.goods[goodIndex].quantity = parseInt(quantity, 10);
+    }
   }
 
   goBackToOrdersPage() {
@@ -79,8 +76,6 @@ export class SingleOrderComponent implements OnInit {
     try {
       // when creating the order make sure the id is 0 as that will be set server side
       const savedOrder: Order = new Order();
-      (savedOrder.date = Date.now()), (savedOrder.id = 0);
-      savedOrder.goods = [];
       savedOrder.owner = this.loginId;
       savedOrder.total = 0;
       this.goods.forEach(good => {

@@ -26,7 +26,8 @@ export class OrdersService {
     return orders.data;
   }
 
-  async createOrder(savedOrder: any) {
+  async createOrder(savedOrder: Order) {
+    savedOrder.date = Date.now();
     await axios.post(environment.ordersRoute, savedOrder);
   }
 
