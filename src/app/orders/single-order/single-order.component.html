@@ -1,12 +1,12 @@
-<div class="container">
+<div class="container" *ngIf="goods$ | async as goods">
   <div class="row">
     <div class="col">
       <h1 *ngIf="usage === create">Create Order</h1>
       <h1 *ngIf="usage === view">View Order</h1>
     </div>
   </div>
-  <div class="row">
-    <div class="col" *ngIf="goods.length > 0">
+  <div class="row" *ngIf="usage === create">
+    <div class="col">
       <ul class="list-group" *ngFor="let good of goods">
         <li class="list-group-item">
           <div class="row">
@@ -35,7 +35,72 @@
                       <select
                         class="form-control"
                         id="goodQuantity"
-                        (change)="selectGood(good.id, $event.target.value)"
+                        (change)="selectGood(good, $event.target.value)"
+                        *ngIf="this.usage !== view"
+                        value="good.quantity"
+                      >
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                      <select
+                        class="form-control"
+                        id="goodQuantity"
+                        value="{{ good.quantity }}"
+                        disabled="true"
+                        *ngIf="this.usage === view"
+                      >
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row" *ngIf="usage === view">
+    <div class="col">
+      <ul class="list-group" *ngFor="let good of goods.goods">
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col">
+              <img src="{{ good.picture }}" />
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <div class="description">
+                    {{ good.description }}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <li class="list-group-item">{{ good.name }}</li>
+                  <li class="list-group-item">{{ good.price }}</li>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <form>
+                    <div class="form-group">
+                      <label for="goodQuantity">Select Quantity</label>
+                      <select
+                        class="form-control"
+                        id="goodQuantity"
+                        (change)="selectGood(good, $event.target.value)"
                         *ngIf="this.usage !== view"
                         value="good.quantity"
                       >
@@ -72,8 +137,8 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="total" *ngIf="usage === view && viewOrder !== undefined">
-        Total: {{ viewOrder.total | currency }}
+      <div class="total" *ngIf="usage === view">
+        Total: {{ goods.total | currency }}
       </div>
     </div>
   </div>
@@ -82,7 +147,7 @@
       <button
         type="button"
         class="btn btn-success"
-        (click)="saveOrder()"
+        (click)="saveOrder(goods)"
         *ngIf="this.usage === create"
       >
         save

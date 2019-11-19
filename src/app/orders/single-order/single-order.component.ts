@@ -1,23 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GoodsService } from 'src/app/services/goods/goods.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdersService } from 'src/app/services/orders/orders.service';
 import { Goods } from 'src/app/models/goods/goods';
 import { Order } from 'src/app/models/order/order';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-orders',
   templateUrl: './single-order.component.html',
   styleUrls: ['./single-order.component.scss']
 })
-export class SingleOrderComponent implements OnInit {
-  goods: Goods[] = [];
+export class SingleOrderComponent implements OnInit, OnDestroy {
+  goods$: Observable<Goods[]>;
+  unsubscribe$ = new Subject();
   loginId: number;
   orderId: number;
   usage: string;
   view = 'VIEW';
   create = 'CREATE';
-  viewOrder: Order;
 
   constructor(
     private goodsService: GoodsService,
@@ -30,7 +32,12 @@ export class SingleOrderComponent implements OnInit {
       10
     );
     this.usage = this.activatedRoute.snapshot.paramMap.get('usage');
-    this.getGoods();
+
+    if (this.usage === 'VIEW') {
+      this.goods$ = this.ordersService.getOrderById(this.orderId);
+    } else {
+      this.goods$ = this.goodsService.getGoods();
+    }
   }
 
   ngOnInit() {
@@ -42,53 +49,38 @@ export class SingleOrderComponent implements OnInit {
     this.loginId = login.loginId;
   }
 
-  async getGoods() {
-    try {
-      this.goods = await this.goodsService.getGoods();
-      if (this.usage === 'VIEW') {
-        this.viewOrder = await this.ordersService.getOrderById(this.orderId);
-        this.goods.forEach(good => {
-          this.viewOrder.goods.forEach(og => {
-            if (good.id === og.id) {
-              good.quantity = og.quantity;
-            }
-          });
-        });
-      }
-    } catch (error) {
-      alert(error.message);
-      return;
-    }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
-  selectGood(goodId: number, quantity: string) {
-    const goodIndex = this.goods.findIndex(good => good.id === goodId);
-    if (goodIndex !== -1) {
-      this.goods[goodIndex].quantity = parseInt(quantity, 10);
-    }
+  selectGood(good: Goods, quantity: string) {
+    good.quantity = parseInt(quantity, 10);
   }
 
   goBackToOrdersPage() {
     this.router.navigateByUrl('/orders-page');
   }
 
-  async saveOrder() {
-    try {
-      // when creating the order make sure the id is 0 as that will be set server side
-      const savedOrder: Order = new Order();
-      savedOrder.owner = this.loginId;
-      savedOrder.total = 0;
-      this.goods.forEach(good => {
-        savedOrder.total = savedOrder.total + good.quantity * good.price;
-        savedOrder.goods.push(good);
-      });
-      await this.ordersService.createOrder(savedOrder);
+  saveOrder(goods: Goods[]) {
+    // when creating the order make sure the id is 0 as that will be set server side
+    const savedOrder: Order = new Order();
+    savedOrder.owner = this.loginId;
+    savedOrder.total = 0;
+    goods.forEach(good => {
+      savedOrder.total = savedOrder.total + good.quantity * good.price;
+    });
+    savedOrder.goods = goods;
+    savedOrder.date = Date.now();
 
-      alert('save successful');
-      this.router.navigateByUrl('/orders-page');
-    } catch (error) {
-      alert(error.message);
-      return;
-    }
+    this.ordersService
+      .createOrder(savedOrder)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => {
+          this.router.navigateByUrl('/orders-page');
+        },
+        error => console.log(error)
+      );
   }
 }

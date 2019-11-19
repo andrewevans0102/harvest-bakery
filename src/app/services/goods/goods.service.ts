@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { environment } from '../../../environments/environment';
 import { Goods } from 'src/app/models/goods/goods';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoodsService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  async getGoods(): Promise<Goods[]> {
-    const goods = await axios.get(environment.goodsRoute);
-    return goods.data;
+  getGoods(): Observable<Goods[]> {
+    return this.http.get<Goods[]>(environment.goodsRoute);
   }
 }

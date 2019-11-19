@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OrdersService } from '../../services/orders/orders.service';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { Order } from 'src/app/models/order/order';
+import { Subject, Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-orders-page',
   templateUrl: './orders-page.component.html',
   styleUrls: ['./orders-page.component.scss']
 })
-export class OrdersPageComponent implements OnInit {
+export class OrdersPageComponent implements OnInit, OnDestroy {
   orders: Order[] = [];
   loginId: string;
+  unsubscribe$ = new Subject();
+  orders$: Observable<Order[]>;
 
   constructor(
     private ordersService: OrdersService,
@@ -26,33 +30,32 @@ export class OrdersPageComponent implements OnInit {
       alert('you are not authorized to view this page');
       this.router.navigateByUrl('/landing-page');
     }
-    this.getOrders(this.loginId);
+    this.orders$ = this.ordersService.getOrdersByOwner(this.loginId);
   }
 
-  async getOrders(ownerId: string) {
-    try {
-      this.orders = await this.ordersService.getOrdersByOwner(ownerId);
-    } catch (error) {
-      throw error;
-    }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
-  async logout() {
-    try {
-      const response = await this.auth.logout();
-      alert(response);
-      localStorage.removeItem('login');
-      this.router.navigateByUrl('/landing-page');
-    } catch (error) {
-      throw error;
-    }
+  logout() {
+    this.auth
+      .logout()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => {
+          localStorage.removeItem('login');
+          this.router.navigateByUrl('/landing-page');
+        },
+        error => console.log(error)
+      );
   }
 
   viewOrder(id: number) {
     this.router.navigateByUrl(`/single-order/${id}/VIEW`);
   }
 
-  async createOrder() {
+  createOrder() {
     try {
       this.router.navigateByUrl(
         `/single-order/${this.orders.length + 1}/CREATE)`
@@ -62,12 +65,20 @@ export class OrdersPageComponent implements OnInit {
     }
   }
 
-  async deleteOrder(orderId: string) {
-    try {
-      await this.ordersService.deleteOrder(orderId);
-      this.getOrders(this.loginId);
-    } catch (error) {
-      throw error;
-    }
+  deleteOrder(orderId: string, orders: Order[]) {
+    this.ordersService
+      .deleteOrder(orderId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => {
+          const orderIndex = orders.findIndex(
+            order => order.id === parseInt(orderId, 10)
+          );
+          if (orderIndex !== -1) {
+            orders.splice(orderIndex, 1);
+          }
+        },
+        error => console.log(error)
+      );
   }
 }

@@ -9,6 +9,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { FormsModule } from '@angular/forms';
 import { OrdersPageComponent } from './orders/orders-page/orders-page.component';
 import { SingleOrderComponent } from './orders/single-order/single-order.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { SingleOrderComponent } from './orders/single-order/single-order.compone
     OrdersPageComponent,
     SingleOrderComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
 })
